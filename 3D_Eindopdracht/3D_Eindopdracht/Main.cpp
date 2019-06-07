@@ -1,4 +1,7 @@
 #include "GL/freeglut.h"
+#include "World.h"
+
+static World* world;
 
 int main(int argc, char * argv[])
 {
@@ -14,20 +17,15 @@ int main(int argc, char * argv[])
 
 	glutCreateWindow("Tim van der Vooren");
 
-	/*glutIdleFunc([]()
-	{
-		World::getWorld()->idle();
-		Game::getInstance()->handleEvents();
+	world = new World(desktop.right, desktop.bottom);
 
-	});*/
-
-	/*glutDisplayFunc([]() { World::getWorld()->display(); });
+	glutIdleFunc([](){ World::getWorld()->idle(); });
+	glutDisplayFunc([]() { World::getWorld()->display(); });
 	glutReshapeFunc([](int horizontal, int vertical) { World::getWorld()->reshape(horizontal, vertical); });
 	glutKeyboardFunc([](unsigned char key, int mouseX, int mouseY) { World::getWorld()->keyboard(key, mouseX, mouseY); });
 	glutKeyboardUpFunc([](unsigned char key, int mouseX, int mouseY) { World::getWorld()->keyboardUp(key, mouseX, mouseY); });
 	glutPassiveMotionFunc([](int mouseX, int mouseY) {World::getWorld()->mousePassiveMotion(mouseX, mouseY); });
 	glutMouseFunc([](int button, int state, int x, int y) {World::getWorld()->mouseClick(button, state, x, y); });
-*/
 
 	glutMainLoop();
 }

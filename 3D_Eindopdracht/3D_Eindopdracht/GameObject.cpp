@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Component.h"
+#include "GL/freeglut.h"
 
 GameObject::GameObject()
 {
@@ -39,6 +40,9 @@ void GameObject::draw()
 {
 	for (Component* c : components)
 	{
+		glRotatef(rotationX, 1, 0, 0);
+		glRotatef(rotationY, 0, 1, 0);
+		glRotatef(rotationZ, 0, 0, 1);
 		c->draw();
 	}
 }

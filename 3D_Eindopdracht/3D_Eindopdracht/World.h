@@ -34,4 +34,6 @@ public:
 
 	void createFloor();
 	void createOuterWalls();
+	void createDoor(float x, float z);
+	void createHedge(float startX, float startZ, float endX, float endZ);
 };

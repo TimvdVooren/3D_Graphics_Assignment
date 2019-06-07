@@ -2,6 +2,8 @@
 #include "GL/freeglut.h"
 #include "FloorComponent.h"
 #include "WallComponent.h"
+#include "DoorComponent.h"
+#include "HedgeComponent.h"
 
 static World* world;
 struct Camera
@@ -24,6 +26,9 @@ World::World(int horizontal, int vertical)
 
 	createFloor(); 
 	createOuterWalls();
+	createDoor(0, 0);
+	createHedge(-12, 0, 0, 0);
+	createHedge(2, 0, 10, 0);
 }
 
 World::~World()
@@ -44,6 +49,10 @@ void World::idle(void)
 	if (keys['S'] || keys['s']) move(270, deltaTime*speed);
 	if (keys['Q'] || keys['q']) camera.posY += deltaTime * speed;
 	if (keys['E'] || keys['e']) camera.posY -= deltaTime * speed;
+
+	for (GameObject* object : gameObjects) {
+		object->update(deltaTime);
+	}
 
 	glutPostRedisplay();
 }
@@ -82,7 +91,7 @@ void World::reshape(int horizontal, int vertical)
 void World::move(float angle, float fac)
 {
 	camera.posX += cosf((camera.rotY + angle) / 180 * M_PI) * fac;
-	camera.posY += sinf((camera.rotY + angle) / 180 * M_PI) * fac;
+	camera.posZ += sinf((camera.rotY + angle) / 180 * M_PI) * fac;
 }
 
 void World::keyboard(unsigned char key, int mouseX, int mouseY)
@@ -123,6 +132,11 @@ void World::mousePassiveMotion(int x, int y)
 
 void World::mouseClick(int button, int state, int x, int y)
 {
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+		for (GameObject* object : gameObjects) {
+			object->handleEvent(deltaTime);
+		}
+	}
 }
 
 World * World::getWorld()
@@ -145,5 +159,21 @@ void World::createOuterWalls()
 	outerWalls->addComponent(new WallComponent(20, 20, -20, 20));
 	outerWalls->addComponent(new WallComponent(-20, 20, -20, -20));
 	gameObjects.push_back(outerWalls);
+}
+
+void World::createDoor(float x, float z)
+{
+	GameObject* door = new GameObject();
+	DoorComponent* doorComponent = new DoorComponent(x, z);
+	doorComponent->setGameObject(door);
+	door->addComponent(doorComponent);
+	gameObjects.push_back(door);
+}
+
+void World::createHedge(float startX, float startZ, float endX, float endZ)
+{
+	GameObject* hedge = new GameObject();
+	hedge->addComponent(new HedgeComponent(startX, startZ, endX, endZ));
+	gameObjects.push_back(hedge);
 }
 

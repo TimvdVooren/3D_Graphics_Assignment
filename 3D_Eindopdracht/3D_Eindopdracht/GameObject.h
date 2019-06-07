@@ -10,6 +10,10 @@ class GameObject
 	std::vector<Component*> components;
 
 public:
+	float rotationX = 0;
+	float rotationY = 0;
+	float rotationZ = 0;
+
 	GameObject();
 	~GameObject();
 

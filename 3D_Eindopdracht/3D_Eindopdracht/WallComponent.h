@@ -2,7 +2,6 @@
 
 #include "Component.h"
 #include "Texture.h"
-#include <tuple>
 
 class WallComponent : virtual public Component
 {

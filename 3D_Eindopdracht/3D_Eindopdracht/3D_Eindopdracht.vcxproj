@@ -76,11 +76,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\timva\Desktop\TI Jaar 2\Periode 4 TI-2\3D-graphics\3D_Graphics_Assignment\3D_Eindopdracht\3D_Eindopdracht\freeglut\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Tim\Desktop\Programming\3D_Graphics_Assignment\3D_Eindopdracht\3D_Eindopdracht\freeglut\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\timva\Desktop\TI Jaar 2\Periode 4 TI-2\3D-graphics\3D_Graphics_Assignment\3D_Eindopdracht\3D_Eindopdracht\freeglut\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\Tim\Desktop\Programming\3D_Graphics_Assignment\3D_Eindopdracht\3D_Eindopdracht\freeglut\lib\freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -89,7 +89,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Tim\Desktop\Programming\3D_Graphics_Assignment\3D_Eindopdracht\3D_Eindopdracht\freeglut\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Users\Tim\Desktop\Programming\3D_Graphics_Assignment\3D_Eindopdracht\3D_Eindopdracht\freeglut\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -127,6 +132,7 @@
     <ClCompile Include="DoorComponent.cpp" />
     <ClCompile Include="FloorComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HedgeComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="WallComponent.cpp" />
@@ -137,6 +143,7 @@
     <ClInclude Include="DoorComponent.h" />
     <ClInclude Include="FloorComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="HedgeComponent.h" />
     <ClInclude Include="stbi.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="WallComponent.h" />

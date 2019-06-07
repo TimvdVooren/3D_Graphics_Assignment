@@ -33,6 +33,5 @@ public:
 	static World* getWorld();
 
 	void createFloor();
-	void spawnCube(float, float, float, float);
-	
+	void createOuterWalls();
 };

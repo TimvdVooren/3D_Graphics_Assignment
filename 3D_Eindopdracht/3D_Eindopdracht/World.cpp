@@ -1,15 +1,16 @@
 #include "World.h"
 #include "GL/freeglut.h"
 #include "FloorComponent.h"
+#include "WallComponent.h"
 
 static World* world;
 struct Camera
 {
 	float posX = 0;
-	float posY = 0;
+	float posY = -3;
+	float posZ = -18;
 	float rotX = 0;
 	float rotY = 0;
-	float posZ = -4;
 } camera;
 
 World::World(int horizontal, int vertical)
@@ -21,7 +22,8 @@ World::World(int horizontal, int vertical)
 	glEnable(GL_DEPTH_TEST);
 	ZeroMemory(keys, sizeof(keys));
 
-	createFloor();
+	createFloor(); 
+	createOuterWalls();
 }
 
 World::~World()
@@ -40,8 +42,8 @@ void World::idle(void)
 	if (keys['D'] || keys['d']) move(180, deltaTime*speed);
 	if (keys['W'] || keys['w']) move(90, deltaTime*speed);
 	if (keys['S'] || keys['s']) move(270, deltaTime*speed);
-	if (keys['Q'] || keys['q']) camera.posZ += deltaTime * speed;
-	if (keys['E'] || keys['e']) camera.posZ -= deltaTime * speed;
+	if (keys['Q'] || keys['q']) camera.posY += deltaTime * speed;
+	if (keys['E'] || keys['e']) camera.posY -= deltaTime * speed;
 
 	glutPostRedisplay();
 }
@@ -57,7 +59,7 @@ void World::display()
 
 	glRotatef(camera.rotX, 1, 0, 0);
 	glRotatef(camera.rotY, 0, 1, 0);
-	glTranslatef(camera.posX, camera.posZ, camera.posY);
+	glTranslatef(camera.posX, camera.posY, camera.posZ);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -67,9 +69,6 @@ void World::display()
 		object->draw();
 		glPopMatrix();
 	}
-
-	//spawns a cube
-	spawnCube(1, 1, 1, 2);
 
 	glutSwapBuffers();
 }
@@ -138,46 +137,13 @@ void World::createFloor()
 	gameObjects.push_back(floor);
 }
 
-void World::spawnCube(float x, float y, float z, float size)
+void World::createOuterWalls()
 {
-	glTranslatef(x, y, z);
-	glScalef(size, size, size);
-	glBegin(GL_QUADS);
-	glColor3f(1, 0, 0);
-	//front
-	glVertex3f(0, 0, 0);
-	glVertex3f(1, 0, 0);
-	glVertex3f(1, 1, 0);
-	glVertex3f(0, 1, 0);
-
-	//back
-	glVertex3f(0, 0, 1);
-	glVertex3f(1, 0, 1);
-	glVertex3f(1, 1, 1);
-	glVertex3f(0, 1, 1);
-
-	//top
-	glVertex3f(0, 1, 0);
-	glVertex3f(1, 1, 0);
-	glVertex3f(1, 1, 1);
-	glVertex3f(0, 1, 1);
-
-	//bottom
-	glVertex3f(0, 0, 0);
-	glVertex3f(1, 0, 0);
-	glVertex3f(1, 0, 1);
-	glVertex3f(0, 0, 1);
-
-	//left
-	glVertex3f(0, 0, 0);
-	glVertex3f(0, 1, 0);
-	glVertex3f(0, 1, 1);
-	glVertex3f(0, 0, 1);
-
-	//right
-	glVertex3f(1, 0, 0);
-	glVertex3f(1, 1, 0);
-	glVertex3f(1, 1, 1);
-	glVertex3f(1, 0, 1);
-	glEnd();
+	GameObject* outerWalls = new GameObject();
+	outerWalls->addComponent(new WallComponent(-20, -20, 20, -20));
+	outerWalls->addComponent(new WallComponent(20, -20, 20, 20));
+	outerWalls->addComponent(new WallComponent(20, 20, -20, 20));
+	outerWalls->addComponent(new WallComponent(-20, 20, -20, -20));
+	gameObjects.push_back(outerWalls);
 }
+

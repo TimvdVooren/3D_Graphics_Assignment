@@ -5,9 +5,7 @@ FloorComponent::FloorComponent()
 	floorTexture = Texture("Textures/grass_texture.jpg");
 }
 
-FloorComponent::~FloorComponent()
-{
-}
+FloorComponent::~FloorComponent(){}
 
 void FloorComponent::draw()
 {
@@ -16,9 +14,9 @@ void FloorComponent::draw()
 
 	glBegin(GL_QUADS);
 	glColor3f(1, 1, 1);
-	glTexCoord2f(0, 0); glVertex3f(-10, 0, -10);
-	glTexCoord2f(1, 0); glVertex3f(10, 0, -10);
-	glTexCoord2f(1, 1); glVertex3f(10, 0, 10);
-	glTexCoord2f(0, 1); glVertex3f(-10, 0, 10);
+	glTexCoord2f(0, 0); glVertex3f(-20, 0, -20);
+	glTexCoord2f(5, 0); glVertex3f(20, 0, -20);
+	glTexCoord2f(5, 5); glVertex3f(20, 0, 20);
+	glTexCoord2f(0, 5); glVertex3f(-20, 0, 20);
 	glEnd();
 }

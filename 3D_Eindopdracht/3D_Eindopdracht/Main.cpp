@@ -5,10 +5,8 @@ static World* world;
 
 int main(int argc, char * argv[])
 {
-	glEnable(GL_DEPTH_TEST);
-
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_RGB | GLUT_DOUBLE);
 
 	RECT desktop;
 	const HWND hDesktop = GetDesktopWindow();

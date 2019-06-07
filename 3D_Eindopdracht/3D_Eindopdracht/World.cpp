@@ -1,5 +1,6 @@
 #include "World.h"
 #include "GL/freeglut.h"
+#include "FloorComponent.h"
 
 static World* world;
 struct Camera
@@ -17,7 +18,10 @@ World::World(int horizontal, int vertical)
 	width = horizontal;
 	height = vertical;
 	lastFrameTime = 0;
+	glEnable(GL_DEPTH_TEST);
 	ZeroMemory(keys, sizeof(keys));
+
+	createFloor();
 }
 
 World::~World()
@@ -58,7 +62,14 @@ void World::display()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	spawnCube();
+	for (GameObject* object : gameObjects) {
+		glPushMatrix();
+		object->draw();
+		glPopMatrix();
+	}
+
+	//spawns a cube
+	spawnCube(1, 1, 1, 2);
 
 	glutSwapBuffers();
 }
@@ -120,8 +131,17 @@ World * World::getWorld()
 	return world;
 }
 
-void World::spawnCube()
+void World::createFloor()
 {
+	GameObject* floor = new GameObject();
+	floor->addComponent(new FloorComponent());
+	gameObjects.push_back(floor);
+}
+
+void World::spawnCube(float x, float y, float z, float size)
+{
+	glTranslatef(x, y, z);
+	glScalef(size, size, size);
 	glBegin(GL_QUADS);
 	glColor3f(1, 0, 0);
 	//front

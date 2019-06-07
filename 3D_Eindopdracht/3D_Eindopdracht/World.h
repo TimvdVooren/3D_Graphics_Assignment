@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include "GameObject.h"
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -12,6 +15,8 @@ class World
 	float lastFrameTime;
 	bool keys[255];
 	bool justMovedMouse = false;
+
+	std::vector<GameObject*> gameObjects;
 
 public:
 	World(int, int);
@@ -27,5 +32,7 @@ public:
 	void mouseClick(int, int, int, int);
 	static World* getWorld();
 
-	void spawnCube();
+	void createFloor();
+	void spawnCube(float, float, float, float);
+	
 };

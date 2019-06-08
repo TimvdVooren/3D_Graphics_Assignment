@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "GameObject.h"
+#include "ObjColor.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -36,4 +37,5 @@ public:
 	void createOuterWalls();
 	void createDoor(float x, float z);
 	void createHedge(float startX, float startZ, float endX, float endZ);
+	void createKey(float x, float z, ObjColor color);
 };

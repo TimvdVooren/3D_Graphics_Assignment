@@ -4,6 +4,7 @@
 #include "WallComponent.h"
 #include "DoorComponent.h"
 #include "HedgeComponent.h"
+#include "ModelComponent.h"
 
 static World* world;
 struct Camera
@@ -29,6 +30,7 @@ World::World(int horizontal, int vertical)
 	createDoor(0, 0);
 	createHedge(-12, 0, 0, 0);
 	createHedge(2, 0, 10, 0);
+	createKey(0, 0, RED);
 }
 
 World::~World()
@@ -175,5 +177,12 @@ void World::createHedge(float startX, float startZ, float endX, float endZ)
 	GameObject* hedge = new GameObject();
 	hedge->addComponent(new HedgeComponent(startX, startZ, endX, endZ));
 	gameObjects.push_back(hedge);
+}
+
+void World::createKey(float x, float z, ObjColor color)
+{
+	GameObject* key = new GameObject();
+	key->addComponent(new ModelComponent("Models/key.obj", x, z, color));
+	gameObjects.push_back(key);
 }
 

@@ -8,7 +8,7 @@ class Texture
 {
 	GLuint textureId;
 public:
-	Texture(const std::string &filename);
+	Texture(const std::string &fileName);
 	Texture();
 	~Texture();
 	void bind();

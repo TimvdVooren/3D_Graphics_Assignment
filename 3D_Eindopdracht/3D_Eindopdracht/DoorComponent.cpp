@@ -18,7 +18,7 @@ void DoorComponent::draw()
 	glBegin(GL_QUADS);
 	glColor3f(1, 1, 1);
 	glTexCoord2f(0, 0); glVertex3f(x, 0, z);
-	glTexCoord2f(1, 0); glVertex3f(x+2, 0, z);
+	glTexCoord2f(1, 0); glVertex3f(x + 2, 0, z);
 	glTexCoord2f(1, 1); glVertex3f(x+2, 4, z);
 	glTexCoord2f(0, 1); glVertex3f(x, 4, z);
 	glEnd();

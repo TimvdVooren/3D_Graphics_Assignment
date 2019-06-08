@@ -30,7 +30,12 @@ World::World(int horizontal, int vertical)
 	createDoor(0, 0, NONE);
 	createHedge(-12, 0, 0, 0);
 	createHedge(2, 0, 10, 0);
-	createKey(0, 0, BLUE);
+	createKey(-3, 0, RED);
+	createKey(-2, 0, GREEN);
+	createKey(-1, 0, BLUE);
+	createKey(0, 0, PURPLE);
+	createKey(1, 0, ORANGE);
+	createKey(2, 0, CYAN);
 }
 
 World::~World()
@@ -181,7 +186,7 @@ void World::createHedge(float startX, float startZ, float endX, float endZ)
 
 void World::createKey(float x, float z, Color color)
 {
-	GameObject* key = new GameObject();
+	GameObject* key = new GameObject(x, 1.5f, z);
 	ModelComponent* keyComponent = new ModelComponent("Models/key.obj", x, z, color);
 	keyComponent->setGameObject(key);
 	keyComponent->setRotationPoint();

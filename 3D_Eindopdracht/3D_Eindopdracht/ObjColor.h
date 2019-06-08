@@ -2,7 +2,7 @@
 
 #include "GL/freeglut.h"
 
-enum Color { NONE, RED, GREEN, BLUE, PURPLE, ORANGE, YELLOW };
+enum Color { NONE, RED, GREEN, BLUE, PURPLE, ORANGE, CYAN };
 
 class ObjColor {
 	Color color;

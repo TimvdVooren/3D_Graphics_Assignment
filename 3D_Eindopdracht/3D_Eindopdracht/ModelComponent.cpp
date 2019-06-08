@@ -15,7 +15,6 @@ ModelComponent::~ModelComponent(){}
 
 void ModelComponent::draw()
 {
-	glTranslatef(x, 1.5f, z);
 	glScalef(scale, scale, scale);
 	glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
 	objColor.setColor();

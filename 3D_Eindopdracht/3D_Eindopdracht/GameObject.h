@@ -14,8 +14,10 @@ public:
 	float rotationX = 0;
 	float rotationY = 0;
 	float rotationZ = 0;
+	::Vec3f position;
 	::Vec3f rotationPoint;
 
+	GameObject(float x, float y, float z);
 	GameObject();
 	~GameObject();
 

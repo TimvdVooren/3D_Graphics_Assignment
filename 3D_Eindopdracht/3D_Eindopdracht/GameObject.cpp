@@ -2,8 +2,15 @@
 #include "Component.h"
 #include "GL/freeglut.h"
 
+GameObject::GameObject(float x, float y, float z)
+{
+	position = ::Vec3f(x, y, z);
+	rotationPoint = ::Vec3f(0, 0, 0);
+}
+
 GameObject::GameObject()
 {
+	position = ::Vec3f(0, 0, 0);
 	rotationPoint = ::Vec3f(0, 0, 0);
 }
 
@@ -39,6 +46,7 @@ void GameObject::draw()
 {
 	for (Component* c : components)
 	{
+		glTranslatef(position.x, position.y, position.z);
 		glTranslatef(rotationPoint.x, rotationPoint.y, rotationPoint.z);
 		glRotatef(rotationX, 1, 0, 0);
 		glRotatef(rotationY, 0, 1, 0);

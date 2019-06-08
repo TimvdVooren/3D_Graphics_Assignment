@@ -30,7 +30,7 @@ void ObjColor::setColor()
 		case ORANGE:
 			glColor3f(1.0f, 1.0f, 0.0f);
 			break;
-		case YELLOW:
+		case CYAN:
 			glColor3f(0.0f, 1.0f, 1.0f);
 			break;
 	}

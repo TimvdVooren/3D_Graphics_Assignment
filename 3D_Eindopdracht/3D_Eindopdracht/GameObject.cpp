@@ -4,11 +4,10 @@
 
 GameObject::GameObject()
 {
+	rotationPoint = ::Vec3f(0, 0, 0);
 }
 
-GameObject::~GameObject()
-{
-}
+GameObject::~GameObject(){}
 
 void GameObject::addComponent(Component * component)
 {
@@ -40,9 +39,11 @@ void GameObject::draw()
 {
 	for (Component* c : components)
 	{
+		glTranslatef(rotationPoint.x, rotationPoint.y, rotationPoint.z);
 		glRotatef(rotationX, 1, 0, 0);
 		glRotatef(rotationY, 0, 1, 0);
 		glRotatef(rotationZ, 0, 0, 1);
+		glTranslatef(-rotationPoint.x, -rotationPoint.y, -rotationPoint.z);
 		c->draw();
 	}
 }

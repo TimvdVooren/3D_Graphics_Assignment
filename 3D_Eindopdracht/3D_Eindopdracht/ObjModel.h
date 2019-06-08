@@ -43,5 +43,6 @@ public:
 	~ObjModel(void);
 
 	void draw();
+	::Vec3f getCenter();
 };
 

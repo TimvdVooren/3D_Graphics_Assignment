@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include "Vec.h"
 
 class Component;
 
@@ -13,6 +14,7 @@ public:
 	float rotationX = 0;
 	float rotationY = 0;
 	float rotationZ = 0;
+	::Vec3f rotationPoint;
 
 	GameObject();
 	~GameObject();

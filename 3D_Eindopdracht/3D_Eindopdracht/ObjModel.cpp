@@ -143,3 +143,26 @@ void ObjModel::draw()
 	}
 	glEnd();
 }
+
+::Vec3f ObjModel::getCenter()
+{
+	float maxX = 0.0f;
+	float maxY = 0.0f;
+	float maxZ = 0.0f;
+
+	for (auto group : groups) {
+		for (auto face : group->faces) {
+			for (auto vertex : face.vertices) {
+				::Vec3f& vec = vertices.at(vertex.position);
+				if (vec.x > maxX)
+					maxX = vec.x;
+				if (vec.y > maxY)
+					maxY = vec.y;
+				if (vec.z > maxZ)
+					maxZ = vec.z;
+			}
+		}
+	}
+
+	return ::Vec3f(maxY / 2.0f, maxY / 2.0f, maxZ / 2.0f);
+}

@@ -9,9 +9,12 @@
 static World* world;
 struct Camera
 {
-	float posX = 0;
+	/*float posX = -14;
 	float posY = -3;
-	float posZ = -18;
+	float posZ = -14;*/
+	float posX = -14;
+	float posY = -7;
+	float posZ = -14;
 	float rotX = 0;
 	float rotY = 0;
 } camera;
@@ -25,17 +28,7 @@ World::World(int horizontal, int vertical)
 	glEnable(GL_DEPTH_TEST);
 	ZeroMemory(keys, sizeof(keys));
 
-	createFloor(); 
-	createOuterWalls();
-	createDoor(0, 0, NONE);
-	createHedge(-12, 0, 0, 0);
-	createHedge(2, 0, 10, 0);
-	createKey(-3, 0, RED);
-	createKey(-2, 0, GREEN);
-	createKey(-1, 0, BLUE);
-	createKey(0, 0, PURPLE);
-	createKey(1, 0, ORANGE);
-	createKey(2, 0, CYAN);
+	loadWorld();
 }
 
 World::~World()
@@ -54,8 +47,8 @@ void World::idle(void)
 	if (keys['D'] || keys['d']) move(180, deltaTime*speed);
 	if (keys['W'] || keys['w']) move(90, deltaTime*speed);
 	if (keys['S'] || keys['s']) move(270, deltaTime*speed);
-	if (keys['Q'] || keys['q']) camera.posY += deltaTime * speed;
-	if (keys['E'] || keys['e']) camera.posY -= deltaTime * speed;
+	if (keys['Q']) camera.posY += deltaTime * speed;
+	if (keys['E']) camera.posY -= deltaTime * speed;
 
 	for (GameObject* object : gameObjects) {
 		object->update(deltaTime);
@@ -151,6 +144,73 @@ World * World::getWorld()
 	return world;
 }
 
+void World::loadWorld()
+{
+	createFloor();
+	createOuterWalls();
+
+	//CREATES MAZE
+	createHedge(12, 16, 12, 8);
+	createHedge(12, 8, 8, 8);
+	createHedge(8, 8, 8, 12);
+	createHedge(8, 12, 0, 12);
+	createHedge(-4, 16, -4, 4);
+	createHedge(-4, 4, -8, 4);
+	createHedge(-8, 12, -8, 8);
+	createHedge(-8, 8, -12, 8);
+	createHedge(-12, 8, -12, 0);
+	createHedge(-12, 16, -12, 12);
+	createHedge(-12, 0, 0, 0);
+	createHedge(-16, -4, -8, -4);
+	createHedge(-8, -4, -8, -8);
+	createHedge(-8, -8, -4, -8);
+	createHedge(-4, -12, -4, -0);
+	createHedge(0, -8, 0, 5);
+	createHedge(0, 4, 12, 4);
+	createHedge(4, 4, 4, 8);
+	createHedge(0, 8, 4, 8);
+	createHedge(12, 4, 12, 0);
+	createHedge(16, -4, 8, -4);
+	createHedge(8, -4, 8, 0);
+	createHedge(8, 0, 4, 0);
+	createHedge(4, -4, 4, -8);
+	createHedge(4, -8, 8, -8);
+	createHedge(8, -8, 8, -12);
+	createHedge(8, -12, -5, -12);
+	createHedge(12, -4, 12, -12);
+	createHedge(-8, -12, -8, -16);
+	createHedge(-7, -12, -12, -12);
+	createHedge(-12, -12, -12, -8);
+	createHedge(12, 12, 13, 12);
+	createHedge(16, 12, 15, 12);
+	createHedge(0, 7, 0, 8);
+	createHedge(-8, 0, -8, 1);
+	createHedge(-8, 4, -8, 3);
+	createHedge(-12, 12, -13, 12);
+	createHedge(-16, 12, -15, 12);
+	createHedge(0, -4, -1, -4);
+	createHedge(-4, -4, -3, -4);
+	createHedge(-12, -8, -13, -8);
+	createHedge(-16, -8, -15, -8);
+
+	//CREATES KEYS
+	createKey(10, 8.5, RED);
+	createKey(-2, -3.5, GREEN);
+	createKey(2, 4.5, BLUE);
+	createKey(-6, -7.5, PURPLE);
+	createKey(14, -7.5, ORANGE);
+	createKey(-14, 12.5, CYAN);
+
+	//CREATES DOORS
+	createDoor(13, 12, NONE);
+	createDoor(-1, -4, RED);
+	createDoor(0, 5, GREEN);
+	createDoor(-8, 3, BLUE);
+	createDoor(-5, -12, PURPLE);
+	createDoor(-13, 12, ORANGE);
+	createDoor(-15, -8, CYAN);
+}
+
 void World::createFloor()
 {
 	GameObject* floor = new GameObject();
@@ -161,10 +221,10 @@ void World::createFloor()
 void World::createOuterWalls()
 {
 	GameObject* outerWalls = new GameObject();
-	outerWalls->addComponent(new WallComponent(-20, -20, 20, -20));
-	outerWalls->addComponent(new WallComponent(20, -20, 20, 20));
-	outerWalls->addComponent(new WallComponent(20, 20, -20, 20));
-	outerWalls->addComponent(new WallComponent(-20, 20, -20, -20));
+	outerWalls->addComponent(new WallComponent(-16, -16, 16, -16));
+	outerWalls->addComponent(new WallComponent(16, -16, 16, 16));
+	outerWalls->addComponent(new WallComponent(16, 16, -16, 16));
+	outerWalls->addComponent(new WallComponent(-16, 16, -16, -16));
 	gameObjects.push_back(outerWalls);
 }
 

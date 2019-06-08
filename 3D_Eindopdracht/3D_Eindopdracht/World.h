@@ -33,6 +33,7 @@ public:
 	void mouseClick(int, int, int, int);
 	static World* getWorld();
 
+	void loadWorld();
 	void createFloor();
 	void createOuterWalls();
 	void createDoor(float x, float z, Color color);

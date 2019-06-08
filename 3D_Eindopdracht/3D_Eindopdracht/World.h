@@ -35,7 +35,7 @@ public:
 
 	void createFloor();
 	void createOuterWalls();
-	void createDoor(float x, float z);
+	void createDoor(float x, float z, Color color);
 	void createHedge(float startX, float startZ, float endX, float endZ);
-	void createKey(float x, float z, ObjColor color);
+	void createKey(float x, float z, Color color);
 };

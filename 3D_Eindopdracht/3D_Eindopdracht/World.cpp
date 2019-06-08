@@ -27,10 +27,10 @@ World::World(int horizontal, int vertical)
 
 	createFloor(); 
 	createOuterWalls();
-	createDoor(0, 0);
+	createDoor(0, 0, GREEN);
 	createHedge(-12, 0, 0, 0);
 	createHedge(2, 0, 10, 0);
-	createKey(0, 0, RED);
+	createKey(0, 0, BLUE);
 }
 
 World::~World()
@@ -163,10 +163,10 @@ void World::createOuterWalls()
 	gameObjects.push_back(outerWalls);
 }
 
-void World::createDoor(float x, float z)
+void World::createDoor(float x, float z, Color color)
 {
 	GameObject* door = new GameObject();
-	DoorComponent* doorComponent = new DoorComponent(x, z);
+	DoorComponent* doorComponent = new DoorComponent(x, z, color);
 	doorComponent->setGameObject(door);
 	door->addComponent(doorComponent);
 	gameObjects.push_back(door);
@@ -179,7 +179,7 @@ void World::createHedge(float startX, float startZ, float endX, float endZ)
 	gameObjects.push_back(hedge);
 }
 
-void World::createKey(float x, float z, ObjColor color)
+void World::createKey(float x, float z, Color color)
 {
 	GameObject* key = new GameObject();
 	key->addComponent(new ModelComponent("Models/key.obj", x, z, color));

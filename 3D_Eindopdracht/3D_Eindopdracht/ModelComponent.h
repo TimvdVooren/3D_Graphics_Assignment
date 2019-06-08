@@ -9,12 +9,11 @@ class ModelComponent : virtual public Component
 	ObjModel model;
 	float x;
 	float z;
-	ObjColor objectColor;
+	ObjColor objColor;
 
 public:
-	ModelComponent(std::string fileName, float x, float z, ObjColor objectColor);
+	ModelComponent(std::string fileName, float x, float z, Color color);
 	~ModelComponent();
 
-	void setColor();
 	void draw();
 };

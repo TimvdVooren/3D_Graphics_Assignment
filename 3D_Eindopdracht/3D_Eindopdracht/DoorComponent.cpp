@@ -1,10 +1,11 @@
 #include "DoorComponent.h"
 #include "Texture.h"
 
-DoorComponent::DoorComponent(float x, float z)
+DoorComponent::DoorComponent(float x, float z, Color color)
 {
 	this->x = x;
 	this->z = z;
+	this->objColor = ObjColor(color); 
 	doorTexture = Texture("Textures/door_texture.jpg");
 }
 
@@ -15,8 +16,8 @@ void DoorComponent::draw()
 	glEnable(GL_TEXTURE_2D);
 	doorTexture.bind();
 
+	objColor.setColor();
 	glBegin(GL_QUADS);
-	glColor3f(1, 1, 1);
 	glTexCoord2f(0, 0); glVertex3f(x, 0, z);
 	glTexCoord2f(1, 0); glVertex3f(x + 2, 0, z);
 	glTexCoord2f(1, 1); glVertex3f(x+2, 4, z);

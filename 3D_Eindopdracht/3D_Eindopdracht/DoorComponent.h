@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include "Texture.h"
+#include "ObjColor.h"
 
 class DoorComponent : virtual public Component
 {
@@ -10,9 +11,10 @@ class DoorComponent : virtual public Component
 	float z;
 	bool open = false;
 	int speed = 100;
+	ObjColor objColor;
 
 public:
-	DoorComponent(float x, float z);
+	DoorComponent(float x, float z, Color color);
 	~DoorComponent();
 
 	void draw();

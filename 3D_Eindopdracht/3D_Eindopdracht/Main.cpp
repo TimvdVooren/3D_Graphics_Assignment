@@ -13,7 +13,7 @@ int main(int argc, char * argv[])
 	GetWindowRect(hDesktop, &desktop);
 	glutInitWindowSize(desktop.right, desktop.bottom);
 
-	glutCreateWindow("Tim van der Vooren");
+	glutCreateWindow("Tim van der Vooren 3D-Graphics");
 
 	world = new World(desktop.right, desktop.bottom);
 

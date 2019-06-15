@@ -1,5 +1,6 @@
 #include "World.h"
 #include "GL/freeglut.h"
+#include "CameraComponent.h"
 #include "FloorComponent.h"
 #include "WallComponent.h"
 #include "DoorComponent.h"
@@ -7,21 +8,12 @@
 #include "ModelComponent.h"
 
 static World* world;
-struct Camera
-{
-	/*float posX = -14;
-	float posY = -3;
-	float posZ = -14;*/
-	float posX = -14;
-	float posY = -7;
-	float posZ = -14;
-	float rotX = 0;
-	float rotY = 0;
-} camera;
 
 World::World(int horizontal, int vertical)
 {
 	world = this;
+	player = new GameObject();
+	player->addComponent(new CameraComponent());
 	width = horizontal;
 	height = vertical;
 	lastFrameTime = 0;
@@ -41,14 +33,15 @@ void World::idle(void)
 	float frameTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 	deltaTime = frameTime - lastFrameTime;
 	lastFrameTime = frameTime;
-
+	
+	CameraComponent* playerCamera = dynamic_cast<CameraComponent*> (player->getComponents().at(0));
 	const float speed = 3;
-	if (keys['A'] || keys['a']) move(0, deltaTime*speed);
-	if (keys['D'] || keys['d']) move(180, deltaTime*speed);
-	if (keys['W'] || keys['w']) move(90, deltaTime*speed);
-	if (keys['S'] || keys['s']) move(270, deltaTime*speed);
-	if (keys['Q']) camera.posY += deltaTime * speed;
-	if (keys['E']) camera.posY -= deltaTime * speed;
+	if (keys['A'] || keys['a']) playerCamera->move(deltaTime*speed, WEST);
+	if (keys['D'] || keys['d']) playerCamera->move(deltaTime*speed, EAST);
+	if (keys['W'] || keys['w']) playerCamera->move(deltaTime*speed, NORTH);
+	if (keys['S'] || keys['s']) playerCamera->move(deltaTime*speed, SOUTH);
+	if (keys['Q']) playerCamera->move(deltaTime*speed, UP);
+	if (keys['E']) playerCamera->move(deltaTime*speed, DOWN);
 
 	for (GameObject* object : gameObjects) {
 		object->update(deltaTime);
@@ -66,9 +59,10 @@ void World::display()
 	glLoadIdentity();
 	gluPerspective(90.0f, width / (float)height, 0.1f, 500.0f);
 
-	glRotatef(camera.rotX, 1, 0, 0);
-	glRotatef(camera.rotY, 0, 1, 0);
-	glTranslatef(camera.posX, camera.posY, camera.posZ);
+	CameraComponent* playerCamera = dynamic_cast<CameraComponent*> (player->getComponents().at(0));
+	glRotatef(playerCamera->getCamera().rotX, 1, 0, 0);
+	glRotatef(playerCamera->getCamera().rotY, 0, 1, 0);
+	glTranslatef(playerCamera->getCamera().posX, playerCamera->getCamera().posY, playerCamera->getCamera().posZ);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -86,12 +80,6 @@ void World::reshape(int horizontal, int vertical)
 {
 	width = horizontal;
 	height = vertical;
-}
-
-void World::move(float angle, float fac)
-{
-	camera.posX += cosf((camera.rotY + angle) / 180 * M_PI) * fac;
-	camera.posZ += sinf((camera.rotY + angle) / 180 * M_PI) * fac;
 }
 
 void World::keyboard(unsigned char key, int mouseX, int mouseY)
@@ -114,12 +102,14 @@ void World::keyboardUp(unsigned char key, int mouseX, int mouseY)
 
 void World::mousePassiveMotion(int x, int y)
 {
+	CameraComponent* playerCamera = dynamic_cast<CameraComponent*> (player->getComponents().at(0));
 	int dx = x - width / 2;
 	int dy = y - height / 2;
+
 	if ((dx != 0 || dy != 0) && abs(dx) < 400 && abs(dy) < 400 && !justMovedMouse)
 	{
-		camera.rotY += dx / 10.0f;
-		camera.rotX += dy / 10.0f;
+		playerCamera->rotate(dy, X);
+		playerCamera->rotate(dx, Y);
 	}
 	if (!justMovedMouse)
 	{
@@ -202,13 +192,13 @@ void World::loadWorld()
 	createKey(-14, 12.5, CYAN);
 
 	//CREATES DOORS
-	createDoor(13, 12, NONE);
-	createDoor(-1, -4, RED);
-	createDoor(0, 5, GREEN);
-	createDoor(-8, 3, BLUE);
-	createDoor(-5, -12, PURPLE);
-	createDoor(-13, 12, ORANGE);
-	createDoor(-15, -8, CYAN);
+	createDoor(13, 12, NONE, NORTH);
+	createDoor(-1, -4, RED, SOUTH);
+	createDoor(0, 5, GREEN, WEST);
+	createDoor(-8, 3, BLUE, EAST);
+	createDoor(-5, -12, PURPLE, SOUTH);
+	createDoor(-13, 12, ORANGE, SOUTH);
+	createDoor(-15, -8, CYAN, NORTH);
 }
 
 void World::createFloor()
@@ -228,11 +218,12 @@ void World::createOuterWalls()
 	gameObjects.push_back(outerWalls);
 }
 
-void World::createDoor(float x, float z, Color color)
+void World::createDoor(float x, float z, Color color, Direction direction)
 {
 	GameObject* door = new GameObject();
-	DoorComponent* doorComponent = new DoorComponent(x, z, color);
+	DoorComponent* doorComponent = new DoorComponent(x, z, color, direction);
 	doorComponent->setGameObject(door);
+	doorComponent->setRotationPoint();
 	door->addComponent(doorComponent);
 	gameObjects.push_back(door);
 }

@@ -1,11 +1,12 @@
 #include "DoorComponent.h"
 #include "Texture.h"
 
-DoorComponent::DoorComponent(float x, float z, Color color)
+DoorComponent::DoorComponent(float x, float z, Color color, Direction facingDirection)
 {
 	this->x = x;
 	this->z = z;
-	this->objColor = ObjColor(color); 
+	this->objColor = ObjColor(color);
+	this->facingDirection = facingDirection;
 	doorTexture = Texture("Textures/door_texture.jpg");
 }
 
@@ -27,11 +28,11 @@ void DoorComponent::draw()
 
 void DoorComponent::update(float elapsedTime)
 {
-	if (gameObject->rotationY < 90.0f && open)
+	if (gameObject->rotationY < facingDirection && open)
 	{
 		gameObject->rotationY += elapsedTime * speed;
 	}
-	else if (gameObject->rotationY > 0.0f && !open) {
+	else if (gameObject->rotationY > facingDirection - 90 && !open) {
 		gameObject->rotationY -= elapsedTime * speed;
 	}
 }
@@ -39,4 +40,10 @@ void DoorComponent::update(float elapsedTime)
 void DoorComponent::handleEvent(float elapsedTime)
 {
 	open = !open;
+}
+
+void DoorComponent::setRotationPoint()
+{
+	gameObject->rotationPoint = ::Vec3f(x, 0, z);
+	gameObject->rotationY = facingDirection - 90;
 }

@@ -18,6 +18,7 @@ GameObject::~GameObject(){}
 
 void GameObject::addComponent(Component * component)
 {
+	component->setGameObject(this);
 	components.push_back(component);
 }
 

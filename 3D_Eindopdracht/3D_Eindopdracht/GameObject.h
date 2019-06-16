@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "Vec.h"
+#include "ObjColor.h"
 
 class Component;
 
@@ -17,14 +18,14 @@ public:
 	::Vec3f position;
 	::Vec3f rotationPoint;
 
-	GameObject(float x, float y, float z);
 	GameObject();
+	GameObject(float x, float y, float z);
 	~GameObject();
 
 	void addComponent(Component* component);
 	std::vector<Component*> getComponents();
 
-	void update(float elapsedTime);
-	void handleEvent(float elapsedTime);
+	void update(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys);
+	void handleEvent(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys);
 	void draw();
 };

@@ -8,6 +8,7 @@
 #include "ModelComponent.h"
 
 static World* world;
+std::vector<ObjColor>* collectedKeys = new std::vector<ObjColor>();
 
 World::World(int horizontal, int vertical)
 {
@@ -19,6 +20,7 @@ World::World(int horizontal, int vertical)
 	lastFrameTime = 0;
 	glEnable(GL_DEPTH_TEST);
 	ZeroMemory(keys, sizeof(keys));
+	collectedKeys->push_back(ObjColor(NONE));
 
 	loadWorld();
 }
@@ -44,7 +46,7 @@ void World::idle(void)
 	if (keys['E']) playerCamera->move(deltaTime*speed, DOWN);
 
 	for (GameObject* object : gameObjects) {
-		object->update(deltaTime);
+		object->update(deltaTime, playerCamera->getCamera().posX, playerCamera->getCamera().posZ, collectedKeys);
 	}
 
 	glutPostRedisplay();
@@ -122,9 +124,10 @@ void World::mousePassiveMotion(int x, int y)
 
 void World::mouseClick(int button, int state, int x, int y)
 {
+	CameraComponent* playerCamera = dynamic_cast<CameraComponent*> (player->getComponents().at(0));
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 		for (GameObject* object : gameObjects) {
-			object->handleEvent(deltaTime);
+			object->handleEvent(deltaTime, playerCamera->getCamera().posX, playerCamera->getCamera().posZ, collectedKeys);
 		}
 	}
 }

@@ -16,10 +16,10 @@ class World
 	float lastFrameTime;
 	bool keys[255];
 	bool justMovedMouse = false;
-
 	std::vector<GameObject*> gameObjects;
 
 public:
+
 	World(int, int);
 	~World();
 

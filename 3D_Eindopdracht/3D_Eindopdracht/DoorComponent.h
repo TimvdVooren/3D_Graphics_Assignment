@@ -21,7 +21,7 @@ public:
 	~DoorComponent();
 
 	void draw();
-	void update(float elapsedTime);
-	void handleEvent(float elapsedTime);
+	void update(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys);
+	void handleEvent(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys);
 	void setRotationPoint();
 };

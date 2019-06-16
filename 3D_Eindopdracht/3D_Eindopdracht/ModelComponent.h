@@ -12,12 +12,13 @@ class ModelComponent : virtual public Component
 	ObjColor objColor;
 	int speed = 50;
 	float scale = 1.0f;
+	bool pickedUp = false;
 
 public:
 	ModelComponent(std::string fileName, float x, float z, Color color);
 	~ModelComponent();
 
 	void draw();
-	void update(float elapsedTime);
+	void update(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys);
 	void setRotationPoint();
 };

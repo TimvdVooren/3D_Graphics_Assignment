@@ -35,3 +35,13 @@ void ObjColor::setColor()
 			break;
 	}
 }
+
+const Color ObjColor::getColor()
+{
+	return color;
+}
+
+bool operator==(const ObjColor & lhs, const ObjColor & rhs)
+{
+	return lhs.color == rhs.color;
+}

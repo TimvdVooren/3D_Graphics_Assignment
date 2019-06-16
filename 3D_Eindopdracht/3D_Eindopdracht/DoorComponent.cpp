@@ -1,5 +1,9 @@
 #include "DoorComponent.h"
 #include "Texture.h"
+#include <math.h> 
+#include <iostream> 
+#include <algorithm>
+#include <vector> 
 
 DoorComponent::DoorComponent(float x, float z, Color color, Direction facingDirection)
 {
@@ -26,7 +30,7 @@ void DoorComponent::draw()
 	glEnd();
 }
 
-void DoorComponent::update(float elapsedTime)
+void DoorComponent::update(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys)
 {
 	if (gameObject->rotationY < facingDirection && open)
 	{
@@ -37,9 +41,16 @@ void DoorComponent::update(float elapsedTime)
 	}
 }
 
-void DoorComponent::handleEvent(float elapsedTime)
+void DoorComponent::handleEvent(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys)
 {
-	open = !open;
+	float xDifference = x + playerX;
+	float zDifference = z + playerZ;
+	float distanceToPlayer = sqrt(pow(xDifference, 2) + pow(zDifference, 2)); 
+	bool keyFound = std::find(keys->begin(), keys->end(), objColor) != keys->end();
+	if (distanceToPlayer <= 1.5f && keyFound && !open) {
+		open = !open;
+		std::cout << distanceToPlayer << "\n";
+	}
 }
 
 void DoorComponent::setRotationPoint()

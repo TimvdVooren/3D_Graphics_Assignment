@@ -13,4 +13,8 @@ public:
 	~ObjColor();
 
 	void setColor();
+	const Color getColor();
+
+	friend bool operator == (const ObjColor& lhs, const ObjColor& rhs);
+
 };

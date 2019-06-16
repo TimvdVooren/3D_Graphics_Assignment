@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "GL/freeglut.h"
+#include "ObjColor.h"
 
 GameObject::GameObject(float x, float y, float z)
 {
@@ -27,19 +28,19 @@ std::vector<Component*> GameObject::getComponents()
 	return components;
 }
 
-void GameObject::update(float elapsedTime)
+void GameObject::update(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys)
 {
 	for (Component* c : components)
 	{
-		c->update(elapsedTime);
+		c->update(elapsedTime, playerX, playerZ, keys);
 	}
 }
 
-void GameObject::handleEvent(float elapsedTime)
+void GameObject::handleEvent(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys)
 {
 	for (Component* c : components)
 	{
-		c->handleEvent(elapsedTime);
+		c->handleEvent(elapsedTime, playerX, playerZ, keys);
 	}
 }
 
@@ -54,5 +55,7 @@ void GameObject::draw()
 		glRotatef(rotationZ, 0, 0, 1);
 		glTranslatef(-rotationPoint.x, -rotationPoint.y, -rotationPoint.z);
 		c->draw();
+		glTranslatef(-position.x, -position.y, -position.z);
 	}
 }
+

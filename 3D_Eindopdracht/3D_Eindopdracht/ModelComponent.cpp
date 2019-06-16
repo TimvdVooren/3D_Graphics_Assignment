@@ -15,15 +15,25 @@ ModelComponent::~ModelComponent(){}
 
 void ModelComponent::draw()
 {
-	glScalef(scale, scale, scale);
-	glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-	objColor.setColor();
-	model.draw();
+	if (!pickedUp) {
+		glScalef(scale, scale, scale);
+		glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+		objColor.setColor();
+		model.draw();
+	}
 }
 
-void ModelComponent::update(float elapsedTime)
+void ModelComponent::update(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys)
 {
 	gameObject->rotationY += elapsedTime * speed;
+
+	float xDifference = x + playerX;
+	float zDifference = z + playerZ + 1.5f;
+	float distanceToPlayer = sqrt(pow(xDifference, 2) + pow(zDifference, 2));
+	if (distanceToPlayer <= 1.5f && !pickedUp) {
+		pickedUp = true;
+		keys->push_back(objColor);
+	}
 }
 
 void ModelComponent::setRotationPoint()

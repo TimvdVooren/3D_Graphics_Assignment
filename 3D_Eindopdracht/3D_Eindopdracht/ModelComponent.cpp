@@ -9,6 +9,9 @@ ModelComponent::ModelComponent(std::string fileName, float x, float z, Color col
 	this->z = z;
 	this->objColor = ObjColor(color);
 	scale = 0.0075f;
+	if (fileName == "Models/trophy.obj") {
+		isTrophy = true;
+	}
 }
 
 ModelComponent::~ModelComponent(){}
@@ -16,8 +19,14 @@ ModelComponent::~ModelComponent(){}
 void ModelComponent::draw()
 {
 	if (!pickedUp) {
-		glScalef(scale, scale, scale);
-		glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+		if (isTrophy)
+		{
+			glScalef(0.1, 0.1, 0.1);
+			glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+		}else{
+			glScalef(scale, scale, scale);
+			glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+		}
 		objColor.setColor();
 		model.draw();
 	}
@@ -30,7 +39,7 @@ void ModelComponent::update(float elapsedTime, float playerX, float playerZ, std
 	float xDifference = x + playerX;
 	float zDifference = z + playerZ + 1.5f;
 	float distanceToPlayer = sqrt(pow(xDifference, 2) + pow(zDifference, 2));
-	if (distanceToPlayer <= 1.5f && !pickedUp) {
+	if (distanceToPlayer <= 1.0f && !pickedUp) {
 		pickedUp = true;
 		keys->push_back(objColor);
 	}

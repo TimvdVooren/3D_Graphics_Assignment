@@ -38,4 +38,5 @@ public:
 	void createDoor(float x, float z, Color color, Direction direction);
 	void createHedge(float startX, float startZ, float endX, float endZ);
 	void createKey(float x, float z, Color color);
+	void createTrophy(float x, float z);
 };

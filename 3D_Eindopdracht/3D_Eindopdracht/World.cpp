@@ -202,6 +202,9 @@ void World::loadWorld()
 	createDoor(-5, -12, PURPLE, SOUTH);
 	createDoor(-13, 12, ORANGE, SOUTH);
 	createDoor(-15, -8, CYAN, NORTH);
+
+	//CREATES TROPHY
+	createTrophy(-10.5, -13.85);
 }
 
 void World::createFloor()
@@ -246,5 +249,15 @@ void World::createKey(float x, float z, Color color)
 	keyComponent->setRotationPoint();
 	key->addComponent(keyComponent);
 	gameObjects.push_back(key);
+}
+
+void World::createTrophy(float x, float z)
+{
+	GameObject* trophy = new GameObject(x, 1.5f, z);
+	ModelComponent* keyComponent = new ModelComponent("Models/trophy.obj", x, z, ORANGE);
+	keyComponent->setGameObject(trophy);
+	keyComponent->setRotationPoint();
+	trophy->addComponent(keyComponent);
+	gameObjects.push_back(trophy);
 }
 

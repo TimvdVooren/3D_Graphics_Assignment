@@ -13,6 +13,7 @@ class ModelComponent : virtual public Component
 	int speed = 50;
 	float scale = 1.0f;
 	bool pickedUp = false;
+	bool isTrophy = false;
 
 public:
 	ModelComponent(std::string fileName, float x, float z, Color color);

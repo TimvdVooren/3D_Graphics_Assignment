@@ -124,5 +124,8 @@
     <Object Include="Models\key.obj">
       <Filter>Resource Files\Models</Filter>
     </Object>
+    <Object Include="Models\trophy.obj">
+      <Filter>Resource Files\Models</Filter>
+    </Object>
   </ItemGroup>
 </Project>

@@ -48,7 +48,7 @@ void ModelComponent::update(float elapsedTime, float playerX, float playerZ, std
 void ModelComponent::setRotationPoint()
 {
 	::Vec3f center = model.getCenter();
-	std::cout << center.x << " " << center.y << " " << center.z;
+	//std::cout << center.x << " " << center.y << " " << center.z;
 	::Vec3f scaledCenter = ::Vec3f(center.x * scale, center.y * scale, center.z * scale);
 	gameObject->rotationPoint = scaledCenter;
 }

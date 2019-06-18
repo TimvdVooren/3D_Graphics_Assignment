@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ObjColor.h"
 #include "Direction.h"
+#include "CollisionManager.h"
 
 class World
 {
@@ -17,6 +18,8 @@ class World
 	bool keys[255];
 	bool justMovedMouse = false;
 	std::vector<GameObject*> gameObjects;
+
+	CollisionManager* collisionManager;
 
 public:
 

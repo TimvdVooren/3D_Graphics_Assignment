@@ -15,5 +15,5 @@ public:
 	HedgeComponent(float startX, float startZ, float endX, float endZ);
 	~HedgeComponent();
 
-	void draw();
+	void draw() override;
 };

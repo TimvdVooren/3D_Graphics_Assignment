@@ -15,5 +15,5 @@ public:
 	WallComponent(float startX, float startZ, float endX, float endZ);
 	~WallComponent();
 
-	void draw();
+	void draw() override;
 };

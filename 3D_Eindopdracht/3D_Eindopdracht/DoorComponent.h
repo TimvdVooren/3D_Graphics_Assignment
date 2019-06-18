@@ -20,8 +20,8 @@ public:
 	DoorComponent(float x, float z, Color color, Direction facingDirection);
 	~DoorComponent();
 
-	void draw();
-	void update(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys);
-	void handleEvent(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys);
+	void draw() override;
+	void update(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys) override;
+	void handleEvent(float elapsedTime, float playerX, float playerZ, std::vector<ObjColor>* keys) override;
 	void setRotationPoint();
 };

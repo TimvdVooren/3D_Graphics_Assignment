@@ -49,7 +49,6 @@ void DoorComponent::handleEvent(float elapsedTime, float playerX, float playerZ,
 	bool keyFound = std::find(keys->begin(), keys->end(), objColor) != keys->end();
 	if (distanceToPlayer <= 1.5f && keyFound && !open) {
 		open = !open;
-		std::cout << distanceToPlayer << "\n";
 	}
 }
 

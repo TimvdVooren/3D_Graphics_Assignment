@@ -16,7 +16,11 @@ public:
 	float rotationY = 0;
 	float rotationZ = 0;
 	::Vec3f position;
-	::Vec3f rotationPoint;
+	::Vec3f rotationPoint; 
+	bool isCollidingNorth = false;
+	bool isCollidingEast = false;
+	bool isCollidingSouth = false;
+	bool isCollidingWest = false;
 
 	GameObject();
 	GameObject(float x, float y, float z);

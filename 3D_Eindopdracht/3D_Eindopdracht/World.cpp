@@ -6,6 +6,8 @@
 #include "DoorComponent.h"
 #include "HedgeComponent.h"
 #include "ModelComponent.h"
+#include "LineCollisionComponent.h"
+#include "CircleCollisionComponent.h"
 
 static World* world;
 std::vector<ObjColor>* collectedKeys = new std::vector<ObjColor>();
@@ -14,13 +16,20 @@ World::World(int horizontal, int vertical)
 {
 	world = this;
 	player = new GameObject();
-	player->addComponent(new CameraComponent());
+	CameraComponent* playerCamera = new CameraComponent();
+	player->addComponent(playerCamera);
+	float circleX = playerCamera->getCamera().posX;
+	float circleZ = playerCamera->getCamera().posZ;
+	player->addComponent(new CircleCollisionComponent(circleX, circleZ, 0.5f));
+	gameObjects.push_back(player);
+
 	width = horizontal;
 	height = vertical;
 	lastFrameTime = 0;
 	glEnable(GL_DEPTH_TEST);
 	ZeroMemory(keys, sizeof(keys));
 	collectedKeys->push_back(ObjColor(NONE));
+	collisionManager = new CollisionManager();
 
 	loadWorld();
 }
@@ -32,11 +41,17 @@ World::~World()
 
 void World::idle(void)
 {
+	CameraComponent* playerCamera = dynamic_cast<CameraComponent*> (player->getComponents().at(0));
+
+	for (GameObject* object : gameObjects) {
+		collisionManager->isColliding(player, object);
+		object->update(deltaTime, playerCamera->getCamera().posX, playerCamera->getCamera().posZ, collectedKeys);
+	}
+
 	float frameTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 	deltaTime = frameTime - lastFrameTime;
 	lastFrameTime = frameTime;
-	
-	CameraComponent* playerCamera = dynamic_cast<CameraComponent*> (player->getComponents().at(0));
+
 	const float speed = 3;
 	if (keys['A'] || keys['a']) playerCamera->move(deltaTime*speed, WEST);
 	if (keys['D'] || keys['d']) playerCamera->move(deltaTime*speed, EAST);
@@ -44,10 +59,6 @@ void World::idle(void)
 	if (keys['S'] || keys['s']) playerCamera->move(deltaTime*speed, SOUTH);
 	if (keys['Q']) playerCamera->move(deltaTime*speed, UP);
 	if (keys['E']) playerCamera->move(deltaTime*speed, DOWN);
-
-	for (GameObject* object : gameObjects) {
-		object->update(deltaTime, playerCamera->getCamera().posX, playerCamera->getCamera().posZ, collectedKeys);
-	}
 
 	glutPostRedisplay();
 }
@@ -218,9 +229,13 @@ void World::createOuterWalls()
 {
 	GameObject* outerWalls = new GameObject();
 	outerWalls->addComponent(new WallComponent(-16, -16, 16, -16));
+	outerWalls->addComponent(new LineCollisionComponent(-16, -16, 16, -16));
 	outerWalls->addComponent(new WallComponent(16, -16, 16, 16));
+	outerWalls->addComponent(new LineCollisionComponent(16, -16, 16, 16));
 	outerWalls->addComponent(new WallComponent(16, 16, -16, 16));
+	outerWalls->addComponent(new LineCollisionComponent(16, 16, -16, 16));
 	outerWalls->addComponent(new WallComponent(-16, 16, -16, -16));
+	outerWalls->addComponent(new LineCollisionComponent(-16, 16, -16, -16));
 	gameObjects.push_back(outerWalls);
 }
 
@@ -231,6 +246,7 @@ void World::createDoor(float x, float z, Color color, Direction direction)
 	doorComponent->setGameObject(door);
 	doorComponent->setRotationPoint();
 	door->addComponent(doorComponent);
+	door->addComponent(new LineCollisionComponent(x, z, x+2, z));
 	gameObjects.push_back(door);
 }
 
@@ -238,6 +254,7 @@ void World::createHedge(float startX, float startZ, float endX, float endZ)
 {
 	GameObject* hedge = new GameObject();
 	hedge->addComponent(new HedgeComponent(startX, startZ, endX, endZ));
+	hedge->addComponent(new LineCollisionComponent(startX, startZ, endX, endZ));
 	gameObjects.push_back(hedge);
 }
 

@@ -1,4 +1,5 @@
 #include "CameraComponent.h"
+#include <iostream>
 
 CameraComponent::CameraComponent()
 {
@@ -11,27 +12,35 @@ CameraComponent::~CameraComponent()
 void CameraComponent::move(float distance, Direction direction)
 {
 	switch (direction) {
-	case NORTH:
-		camera.posX += cosf((camera.rotY + NORTH) / 180 * M_PI) * distance;
-		camera.posZ += sinf((camera.rotY + NORTH) / 180 * M_PI) * distance;
-		break;
-	case EAST:
-		camera.posX += cosf((camera.rotY + EAST) / 180 * M_PI) * distance;
-		camera.posZ += sinf((camera.rotY + EAST) / 180 * M_PI) * distance;
-		break;
-	case SOUTH:
-		camera.posX += cosf((camera.rotY + SOUTH) / 180 * M_PI) * distance;
-		camera.posZ += sinf((camera.rotY + SOUTH) / 180 * M_PI) * distance;
-		break;
-	case WEST:
-		camera.posX += cosf((camera.rotY + WEST) / 180 * M_PI) * distance;
-		camera.posZ += sinf((camera.rotY + WEST) / 180 * M_PI) * distance;
-		break;
 	case UP:
 		camera.posY -= distance;
 		break;
 	case DOWN:
 		camera.posY += distance;
+		break;
+	default:
+		float distanceX = cosf((camera.rotY + direction) / 180 * M_PI) * distance;
+		float distanceZ = sinf((camera.rotY + direction) / 180 * M_PI) * distance;
+
+		if (gameObject->isCollidingNorth && distanceX > 0) {
+			std::cout << "Can't move north";
+			distanceX = 0;
+		}
+		if (gameObject->isCollidingEast && distanceZ > 0) {
+			std::cout << "Can't move east";
+			distanceZ = 0;
+		}
+		if (gameObject->isCollidingSouth && distanceX < 0) {
+			std::cout << "Can't move south";
+			distanceX = 0;
+		}
+		if (gameObject->isCollidingWest && distanceZ < 0) {
+			std::cout << "Can't move west";
+			distanceZ = 0;
+		}
+
+		camera.posX += distanceX;
+		camera.posZ += distanceZ;
 		break;
 	}
 }

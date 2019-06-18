@@ -11,5 +11,5 @@ public:
 	FloorComponent();
 	~FloorComponent();
 
-	void draw();
+	void draw() override;
 };

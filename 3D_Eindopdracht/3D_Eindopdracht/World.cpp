@@ -1,5 +1,6 @@
 #include "World.h"
 #include "GL/freeglut.h"
+#include "GL/glut.h"
 #include "CameraComponent.h"
 #include "FloorComponent.h"
 #include "WallComponent.h"
@@ -71,7 +72,7 @@ void World::idle(void)
 
 void World::display()
 {
-	glClearColor(0.6f, 0.6f, 1, 1);
+	glClearColor(0.6f, 0.6f, 0.9f, 1);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
@@ -86,9 +87,33 @@ void World::display()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	float fogColor[4] = { 0.8f, 0.8f, 0.8f, 1.0f};
+	glFogfv(GL_FOG_COLOR, fogColor);
+	glFogf(GL_FOG_MODE, GL_EXP);
+	glFogf(GL_FOG_DENSITY, 0.05f);
+	glHint(GL_FOG_HINT, GL_FASTEST);
+	glEnable(GL_FOG);
+
+
 	for (GameObject* object : gameObjects) {
 		glPushMatrix();
 		object->draw();
+		glPopMatrix();
+	}
+
+	if (collectedKeys->size() == 1) {
+		glPushMatrix();
+
+		unsigned char winningText[] = "You won!";
+		int strWidth = glutBitmapLength(GLUT_BITMAP_8_BY_13, winningText);
+
+		glRasterPos2f(0.5f - (float)strWidth /2.0f, 0.0f);
+		glColor3f(0.85f, 0, 0);
+		const char* text = "You won!";
+		int len = strlen(text);
+		for (int i = 0; i < len; i++) {
+			glutBitmapCharacter(GLUT_BITMAP_8_BY_13, text[i]);
+		}
 		glPopMatrix();
 	}
 

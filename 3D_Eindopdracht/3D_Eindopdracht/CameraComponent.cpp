@@ -23,19 +23,19 @@ void CameraComponent::move(float distance, Direction direction)
 		float distanceZ = sinf((camera.rotY + direction) / 180 * M_PI) * distance;
 
 		if (gameObject->isCollidingNorth && distanceZ > 0) {
-			std::cout << "Can't move north";
+			//std::cout << "Can't move north";
 			distanceZ = 0;
 		}
 		if (gameObject->isCollidingEast && distanceX < 0) {
-			std::cout << "Can't move east";
+			//std::cout << "Can't move east";
 			distanceX = 0;
 		}
 		if (gameObject->isCollidingSouth && distanceZ < 0) {
-			std::cout << "Can't move south";
+			//std::cout << "Can't move south";
 			distanceZ = 0;
 		}
 		if (gameObject->isCollidingWest && distanceX > 0) {
-			std::cout << "Can't move west";
+			//std::cout << "Can't move west";
 			distanceX = 0;
 		}
 

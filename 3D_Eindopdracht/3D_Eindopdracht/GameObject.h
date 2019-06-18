@@ -22,6 +22,8 @@ public:
 	bool isCollidingSouth = false;
 	bool isCollidingWest = false;
 
+	bool debugging = false;
+
 	GameObject();
 	GameObject(float x, float y, float z);
 	~GameObject();

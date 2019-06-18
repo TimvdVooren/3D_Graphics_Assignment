@@ -15,7 +15,7 @@ bool CollisionManager::isPointOnLine(float px, float pz, Hitline hitline)
 
 	float lineLength = calculateDistance(x1, z1, x2, z2);
 
-	float buffer = 0.2f;
+	float buffer = 0.1f;
 
 	return d1 + d2 >= lineLength - buffer && d1 + d2 <= lineLength + buffer;
 }
@@ -56,36 +56,25 @@ void CollisionManager::isColliding(GameObject * player, GameObject * object)
 	float maxPlayerZ = playerZ + playerCircle->circle.radius;
 	Hitline hitline = objectLine->hitline;
 
-	if (isPointOnLine(maxPlayerX, playerZ, hitline)) {
+
+	if (isPointOnLine(playerX, minPlayerZ, hitline)) {
 		player->isCollidingNorth = true;
-		std::cout << "COLLISION N\n";
+		//std::cout << "COLLISION N " << playerX << " " << playerZ << " " << minPlayerX << " " << minPlayerZ << " " << maxPlayerX << " " << maxPlayerZ << " " << hitline.point1.x << " " << hitline.point1.y << " " << hitline.point2.x << " " << hitline.point2.y << "\n";
 	}
-	else {
-		player->isCollidingNorth = false;
+
+	if (isPointOnLine(maxPlayerX, playerZ, hitline)) {
+		player->isCollidingEast = true;
+		//std::cout << "COLLISION E " << playerX << " " << playerZ << " " << minPlayerX << " " << minPlayerZ << " " << maxPlayerX << " " << maxPlayerZ << " " << hitline.point1.x << " " << hitline.point1.y << " " << hitline.point2.x << " " << hitline.point2.y << "\n";
 	}
 
 	if (isPointOnLine(playerX, maxPlayerZ, hitline)) {
-		player->isCollidingEast = true;
-		std::cout << "COLLISION E\n";
-	}
-	else {
-		player->isCollidingEast = false;
+		player->isCollidingSouth = true;
+		//std::cout << "COLLISION S " << playerX << " " << playerZ << " " << minPlayerX << " " << minPlayerZ << " " << maxPlayerX << " " << maxPlayerZ << " " << hitline.point1.x << " " << hitline.point1.y << " " << hitline.point2.x << " " << hitline.point2.y << "\n";
 	}
 
 	if (isPointOnLine(minPlayerX, playerZ, hitline)) {
-		player->isCollidingSouth = true;
-		std::cout << "COLLISION S\n";
-	}
-	else {
-		player->isCollidingSouth = false;
-	}
-
-	if (isPointOnLine(playerX, minPlayerZ, hitline)) {
 		player->isCollidingWest = true;
-		std::cout << "COLLISION W\n";
-	}
-	else {
-		player->isCollidingWest = false;
+		//std::cout << "COLLISION W " << playerX << " " << playerZ << " " << minPlayerX << " " << minPlayerZ << " " << maxPlayerX << " " << maxPlayerZ << " " << hitline.point1.x << " " << hitline.point1.y << " " << hitline.point2.x << " " << hitline.point2.y << "\n";
 	}
 	
 }

@@ -4,6 +4,7 @@
 #include <iostream> 
 #include <algorithm>
 #include <vector> 
+#include "LineCollisionComponent.h"
 
 DoorComponent::DoorComponent(float x, float z, Color color, Direction facingDirection)
 {
@@ -47,8 +48,14 @@ void DoorComponent::handleEvent(float elapsedTime, float playerX, float playerZ,
 	float zDifference = z + playerZ;
 	float distanceToPlayer = sqrt(pow(xDifference, 2) + pow(zDifference, 2)); 
 	bool keyFound = std::find(keys->begin(), keys->end(), objColor) != keys->end();
+
 	if (distanceToPlayer <= 1.5f && keyFound && !open) {
 		open = !open;
+		for (auto c : gameObject->getComponents()) {
+			if (LineCollisionComponent* line = dynamic_cast<LineCollisionComponent*> (c)) {
+				delete line;
+			}
+		}
 	}
 }
 

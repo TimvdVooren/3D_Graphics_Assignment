@@ -21,6 +21,8 @@ class World
 
 	CollisionManager* collisionManager;
 
+	bool debugging = false;
+
 public:
 
 	World(int, int);

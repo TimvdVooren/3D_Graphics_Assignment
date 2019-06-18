@@ -20,7 +20,7 @@ World::World(int horizontal, int vertical)
 	player->addComponent(playerCamera);
 	float circleX = playerCamera->getCamera().posX;
 	float circleZ = playerCamera->getCamera().posZ;
-	player->addComponent(new CircleCollisionComponent(circleX, circleZ, 0.5f));
+	player->addComponent(new CircleCollisionComponent(circleX, circleZ, 0.2f));
 	gameObjects.push_back(player);
 
 	width = horizontal;
@@ -44,6 +44,7 @@ void World::idle(void)
 	CameraComponent* playerCamera = dynamic_cast<CameraComponent*> (player->getComponents().at(0));
 
 	for (GameObject* object : gameObjects) {
+		object->debugging = debugging;
 		collisionManager->isColliding(player, object);
 		object->update(deltaTime, playerCamera->getCamera().posX, playerCamera->getCamera().posZ, collectedKeys);
 	}
@@ -59,6 +60,11 @@ void World::idle(void)
 	if (keys['S'] || keys['s']) playerCamera->move(deltaTime*speed, SOUTH);
 	if (keys['Q']) playerCamera->move(deltaTime*speed, UP);
 	if (keys['E']) playerCamera->move(deltaTime*speed, DOWN);
+
+	player->isCollidingNorth = false;
+	player->isCollidingEast = false;
+	player->isCollidingSouth = false;
+	player->isCollidingWest = false;
 
 	glutPostRedisplay();
 }
@@ -97,15 +103,20 @@ void World::reshape(int horizontal, int vertical)
 
 void World::keyboard(unsigned char key, int mouseX, int mouseY)
 {
-	switch (key)
-	{
+	if (key == 'F') {
+		debugging = !debugging;
+	}
+	else {
+		switch (key)
+		{
 		case 27:
 			exit(0);
 			break;
 		default:
 			break;
+		}
+		keys[key] = true;
 	}
-	keys[key] = true;
 }
 
 void World::keyboardUp(unsigned char key, int mouseX, int mouseY)
@@ -227,16 +238,22 @@ void World::createFloor()
 
 void World::createOuterWalls()
 {
-	GameObject* outerWalls = new GameObject();
-	outerWalls->addComponent(new WallComponent(-16, -16, 16, -16));
-	outerWalls->addComponent(new LineCollisionComponent(-16, -16, 16, -16));
-	outerWalls->addComponent(new WallComponent(16, -16, 16, 16));
-	outerWalls->addComponent(new LineCollisionComponent(16, -16, 16, 16));
-	outerWalls->addComponent(new WallComponent(16, 16, -16, 16));
-	outerWalls->addComponent(new LineCollisionComponent(16, 16, -16, 16));
-	outerWalls->addComponent(new WallComponent(-16, 16, -16, -16));
-	outerWalls->addComponent(new LineCollisionComponent(-16, 16, -16, -16));
-	gameObjects.push_back(outerWalls);
+	GameObject* outerWalls1 = new GameObject();
+	outerWalls1->addComponent(new WallComponent(-16, -16, 16, -16));
+	outerWalls1->addComponent(new LineCollisionComponent(-16, -16, 16, -16));
+	GameObject* outerWalls2 = new GameObject();
+	outerWalls2->addComponent(new WallComponent(16, -16, 16, 16));
+	outerWalls2->addComponent(new LineCollisionComponent(16, -16, 16, 16));
+	GameObject* outerWalls3 = new GameObject();
+	outerWalls3->addComponent(new WallComponent(16, 16, -16, 16));
+	outerWalls3->addComponent(new LineCollisionComponent(16, 16, -16, 16));
+	GameObject* outerWalls4 = new GameObject();
+	outerWalls4->addComponent(new WallComponent(-16, 16, -16, -16));
+	outerWalls4->addComponent(new LineCollisionComponent(-16, 16, -16, -16));
+	gameObjects.push_back(outerWalls1);	
+	gameObjects.push_back(outerWalls2);
+	gameObjects.push_back(outerWalls3);
+	gameObjects.push_back(outerWalls4);
 }
 
 void World::createDoor(float x, float z, Color color, Direction direction)
@@ -246,7 +263,24 @@ void World::createDoor(float x, float z, Color color, Direction direction)
 	doorComponent->setGameObject(door);
 	doorComponent->setRotationPoint();
 	door->addComponent(doorComponent);
-	door->addComponent(new LineCollisionComponent(x, z, x+2, z));
+
+	int incrementX = 0;
+	int incrementZ = 0;
+	switch (direction) {
+	case NORTH:
+		incrementX = 2;
+		break;
+	case EAST:
+		incrementZ = -2;
+		break;
+	case SOUTH:
+		incrementX = -2;
+		break;
+	case WEST:
+		incrementZ = 2;
+		break;
+	}
+	door->addComponent(new LineCollisionComponent(x, z, x + incrementX, z + incrementZ));
 	gameObjects.push_back(door);
 }
 

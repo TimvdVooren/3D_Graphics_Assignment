@@ -2,6 +2,8 @@
 #include "Component.h"
 #include "GL/freeglut.h"
 #include "ObjColor.h"
+#include "LineCollisionComponent.h"
+#include "CircleCollisionComponent.h"
 
 GameObject::GameObject(float x, float y, float z)
 {
@@ -48,14 +50,27 @@ void GameObject::draw()
 {
 	for (Component* c : components)
 	{
-		glTranslatef(position.x, position.y, position.z);
-		glTranslatef(rotationPoint.x, rotationPoint.y, rotationPoint.z);
-		glRotatef(rotationX, 1, 0, 0);
-		glRotatef(rotationY, 0, 1, 0);
-		glRotatef(rotationZ, 0, 0, 1);
-		glTranslatef(-rotationPoint.x, -rotationPoint.y, -rotationPoint.z);
-		c->draw();
-		glTranslatef(-position.x, -position.y, -position.z);
+		bool draw = true;
+
+		if (LineCollisionComponent* lineComponent = dynamic_cast<LineCollisionComponent*> (c))
+		{
+			draw = debugging;
+		}
+		else if (CircleCollisionComponent* circleComponent = dynamic_cast<CircleCollisionComponent*> (c))
+		{
+			draw = debugging;
+		}
+
+		if (draw) {
+			glTranslatef(position.x, position.y, position.z);
+			glTranslatef(rotationPoint.x, rotationPoint.y, rotationPoint.z);
+			glRotatef(rotationX, 1, 0, 0);
+			glRotatef(rotationY, 0, 1, 0);
+			glRotatef(rotationZ, 0, 0, 1);
+			glTranslatef(-rotationPoint.x, -rotationPoint.y, -rotationPoint.z);
+			c->draw();
+			glTranslatef(-position.x, -position.y, -position.z);
+		}
 	}
 }
 

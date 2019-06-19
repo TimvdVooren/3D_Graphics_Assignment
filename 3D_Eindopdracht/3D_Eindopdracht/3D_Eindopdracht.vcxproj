@@ -135,7 +135,6 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DoorComponent.cpp" />
     <ClCompile Include="FloorComponent.cpp" />
-    <ClCompile Include="FpsCounter.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HedgeComponent.cpp" />
     <ClCompile Include="LineCollisionComponent.cpp" />
@@ -156,7 +155,6 @@
     <ClInclude Include="Direction.h" />
     <ClInclude Include="DoorComponent.h" />
     <ClInclude Include="FloorComponent.h" />
-    <ClInclude Include="FpsCounter.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HedgeComponent.h" />
     <ClInclude Include="LineCollisionComponent.h" />

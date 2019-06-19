@@ -11,8 +11,8 @@ struct Camera
 	float posX = -14;
 	float posY = -3;
 	float posZ = -14;
-	float rotX = 0;
-	float rotY = -90;
+	float rotX = 10;
+	float rotY = 0;
 };
 
 class CameraComponent : virtual public Component

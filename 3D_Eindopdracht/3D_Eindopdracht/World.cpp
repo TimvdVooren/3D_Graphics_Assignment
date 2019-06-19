@@ -79,21 +79,28 @@ void World::display()
 	glLoadIdentity();
 	gluPerspective(90.0f, width / (float)height, 0.1f, 500.0f);
 
-	CameraComponent* playerCamera = dynamic_cast<CameraComponent*> (player->getComponents().at(0));
-	glRotatef(playerCamera->getCamera().rotX, 1, 0, 0);
-	glRotatef(playerCamera->getCamera().rotY, 0, 1, 0);
-	glTranslatef(playerCamera->getCamera().posX, playerCamera->getCamera().posY, playerCamera->getCamera().posZ);
+	GLfloat fogColor[4] = { 0.95f, 0.95f, 0.95f, 0.95f };
+	glEnable(GL_FOG);
+	glFogf(GL_FOG_START, 0.3f);
+	glFogf(GL_FOG_END, 5.0f);
+	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogfv(GL_FOG_COLOR, fogColor);
+	glFogf(GL_FOG_DENSITY, 0.01f);
+	glHint(GL_FOG_HINT, GL_DONT_CARE);
+
+	//Lighting messes up door colors
+	/*glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	GLfloat LightAmbient[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);*/
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	float fogColor[4] = { 0.8f, 0.8f, 0.8f, 1.0f};
-	glFogfv(GL_FOG_COLOR, fogColor);
-	glFogf(GL_FOG_MODE, GL_EXP);
-	glFogf(GL_FOG_DENSITY, 0.05f);
-	glHint(GL_FOG_HINT, GL_FASTEST);
-	glEnable(GL_FOG);
-
+	CameraComponent* playerCamera = dynamic_cast<CameraComponent*> (player->getComponents().at(0));
+	glRotatef(playerCamera->getCamera().rotX, 1, 0, 0);
+	glRotatef(playerCamera->getCamera().rotY, 0, 1, 0);
+	glTranslatef(playerCamera->getCamera().posX, playerCamera->getCamera().posY, playerCamera->getCamera().posZ);
 
 	for (GameObject* object : gameObjects) {
 		glPushMatrix();
@@ -101,20 +108,8 @@ void World::display()
 		glPopMatrix();
 	}
 
-	if (collectedKeys->size() == 1) {
-		glPushMatrix();
-
-		unsigned char winningText[] = "You won!";
-		int strWidth = glutBitmapLength(GLUT_BITMAP_8_BY_13, winningText);
-
-		glRasterPos2f(0.5f - (float)strWidth /2.0f, 0.0f);
-		glColor3f(0.85f, 0, 0);
-		const char* text = "You won!";
-		int len = strlen(text);
-		for (int i = 0; i < len; i++) {
-			glutBitmapCharacter(GLUT_BITMAP_8_BY_13, text[i]);
-		}
-		glPopMatrix();
+	if (collectedKeys->size() == 8) {
+		displayText();
 	}
 
 	glutSwapBuffers();
@@ -184,6 +179,35 @@ World * World::getWorld()
 	return world;
 }
 
+void World::displayText()
+{
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+
+	glOrtho(0.0, width, height, 0.0, -1.0, 10.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glDisable(GL_CULL_FACE);
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	std::string tempString = " Congratulations You Won! ";
+
+	glRotatef(180, 1, 0, 0);
+	glLineWidth(5.0f);
+	glTranslatef((width/2)-tempString.length()*17, -(height/2), 0);
+	glScalef(0.5f, 0.5f, 0.5f);
+
+	unsigned char gameoverText[256];
+	std::copy(tempString.begin(), tempString.end(), gameoverText);
+	gameoverText[tempString.length()] = 0;
+
+	glutStrokeString(GLUT_STROKE_ROMAN, gameoverText);
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+}
+
 void World::loadWorld()
 {
 	createFloor();
@@ -251,7 +275,7 @@ void World::loadWorld()
 	createDoor(-15, -8, CYAN, NORTH);
 
 	//CREATES TROPHY
-	createTrophy(-10.5, -13.85);
+	createTrophy(-10.5, -14);
 }
 
 void World::createFloor()

@@ -36,6 +36,7 @@ public:
 	void mousePassiveMotion(int, int);
 	void mouseClick(int, int, int, int);
 	static World* getWorld();
+	void displayText();
 
 	void loadWorld();
 	void createFloor();
